@@ -21,6 +21,13 @@
 # docker run -i --rm -p 8080:8080 -p 5005:5005 -e JAVA_ENABLE_DEBUG="true" quarkus/start-delay-playground-jvm
 #
 ###
+
+FROM maven:3.6.3-openjdk-11 as builder 
+WORKDIR /app
+COPY ["pom.xml", "./"]
+COPY src src
+RUN mvn clean package -DskipTests 
+
 FROM registry.access.redhat.com/ubi8/ubi-minimal:8.3 
 
 ARG JAVA_PACKAGE=java-11-openjdk-headless
@@ -42,8 +49,8 @@ RUN microdnf install curl ca-certificates ${JAVA_PACKAGE} \
 
 # Configure the JAVA_OPTIONS, you can add -XshowSettings:vm to also display the heap size.
 ENV JAVA_OPTIONS="-Dquarkus.http.host=0.0.0.0 -Djava.util.logging.manager=org.jboss.logmanager.LogManager"
-COPY target/lib/* /deployments/lib/
-COPY target/*-runner.jar /deployments/app.jar
+COPY --from=builder /app/target/lib/* /deployments/lib/
+COPY --from=builder /app/target/*-runner.jar /deployments/app.jar
 
 EXPOSE 8080
 USER 1001
