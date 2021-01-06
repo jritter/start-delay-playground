@@ -22,7 +22,7 @@
 #
 ###
 
-FROM maven:3.6.3-openjdk-11 as builder 
+FROM quay.io/jritter/maven:3.6.3-openjdk-11 as builder 
 WORKDIR /app
 COPY ["pom.xml", "./"]
 COPY src src
