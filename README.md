@@ -1,5 +1,9 @@
 # start-delay-playground project
 
+This small application can be used to play around with health checks which monitor the health of applications. The healthcheck is accessible through http://localhost:8080/health when running locally and with the default port 8080.
+
+The startup delay is set to 10 seconds by default, but can be modified by passing in the environment variable STARTUP_DELAY_SEC.
+
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
 If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
@@ -27,24 +31,20 @@ If you want to build an _über-jar_, execute the following command:
 
 The application is now runnable using `java -jar target/start-delay-playground-1.0.0-SNAPSHOT-runner.jar`.
 
-## Creating a native executable
+## Build Container
 
-You can create a native executable using: 
 ```shell script
-./mvnw package -Pnative
+podman build -t start-delay-playground:latest .
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
+## Run container
+
 ```shell script
-./mvnw package -Pnative -Dquarkus.native.container-build=true
+podman run -p 8080:8080 -it start-delay-playground:latest
 ```
 
-You can then execute your native executable with: `./target/start-delay-playground-1.0.0-SNAPSHOT-runner`
+## Access health check
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.html.
-
-# RESTEasy JAX-RS
-
-<p>A Hello World RESTEasy resource</p>
-
-Guide: https://quarkus.io/guides/rest-json
+```shell script
+curl http://localhost:8080/health
+```
