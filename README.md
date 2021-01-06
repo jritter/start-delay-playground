@@ -48,3 +48,17 @@ podman run -p 8080:8080 -it start-delay-playground:latest
 ```shell script
 curl http://localhost:8080/health
 ```
+
+## Run container with custom startup delay
+
+```shell script
+podman run -p 8080:8080 -e STARTUP_DELAY_SEC=20 -it start-delay-playground:latest
+```
+
+## Use Prebuilt Image
+
+There is also a prebuilt image which can be pulled from quay.io
+
+```shell script
+podman run -p 8080:8080 -e STARTUP_DELAY_SEC=20 -it quay.io/jritter/start-delay-playground:latest
+```
