@@ -1,0 +1,27 @@
+[Unit]
+Description=Delayed Service One
+Before=delayed-service-two.service
+
+[Service]
+Restart=on-failure
+ExecStartPre=/bin/bash -c "/usr/bin/podman rm -f delayed-service-one || true"
+ExecStart=/usr/bin/podman run \
+    --name delayed-service-one \
+    --hostname delayed-service-one \
+    --sdnotify conmon \
+    -p 8081:8080 \
+    -e STARTUP_DELAY_SEC=15 \
+    --health-cmd='/usr/bin/curl --fail --silent http://localhost:8080/health' \
+    --health-interval=15s \
+    --health-retries=3 \
+    --health-start-period=5s \
+    --health-timeout=30s \
+    quay.io/jritter/start-delay-playground:latest
+ExecStop=/usr/bin/podman stop -i -t 20 delayed-service-one
+ExecStopPost=-/usr/bin/podman rm -f delayed-service-one
+KillMode=none
+Type=notify
+NotifyAccess=all
+
+[Install]
+WantedBy=multi-user.target
