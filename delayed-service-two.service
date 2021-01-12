@@ -2,7 +2,6 @@
 Description=Delayed Service Two
 Requires=delayed-service-one.service
 
-
 [Service]
 Restart=on-failure
 ExecStartPre=/bin/bash -c "/usr/bin/podman rm -f delayed-service-two || true"
