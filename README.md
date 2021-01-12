@@ -77,6 +77,7 @@ This project includes two systemd unit files, which models two services [delayed
 
 * Linux distribution running [systemd](https://www.freedesktop.org/wiki/Software/systemd/)
 * Podman >= v2.1.0
+* No running services on Port 8081 and Port 8082 - of course you can modify these ports in the systemd unit files
 
 ## Running the service
 
@@ -178,5 +179,5 @@ Right now we have a solution that when starting delayed-service-two waits until 
 
 Please join us in the following discussions:
 
-https://github.com/containers/podman/issues/6160
-https://github.com/systemd/systemd/issues/9075
+* https://github.com/containers/podman/issues/6160
+* https://github.com/systemd/systemd/issues/9075
